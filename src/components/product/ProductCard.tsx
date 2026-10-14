@@ -1,14 +1,16 @@
 import { Heart, Star } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import type { AppDispatch } from "../../app/store";
 import { addToCart } from "../../features/cart/cartSlice";
-import { toggleWishlist } from "../../features/wishlist/wishlistSlice";
 import type { Product } from "../../features/products/product.types";
+import {
+  selectIsInWishlist,
+  toggleWishlist,
+} from "../../features/wishlist/wishlistSlice";
 import { Badge } from "../common/Badge";
 import { Button } from "../common/Button";
 import { Card } from "../common/Card";
-import { useSelector } from "react-redux";
-import { selectIsInWishlist } from "../../features/wishlist/wishlistSlice";
 
 interface ProductCardProps {
   product: Product;
@@ -29,11 +31,13 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="group overflow-hidden border-0 shadow-sm transition-shadow hover:shadow-lg">
       <div className="relative aspect-square overflow-hidden bg-slate-50">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+        <Link to={`/products/${product.id}`}>
+          <img
+            src={product.image}
+            alt={product.name}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </Link>
 
         {!product.inStock && (
           <Badge variant="warning" className="absolute left-3 top-3">
@@ -56,7 +60,11 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       <div className="px-3 py-3">
-        <h3 className="font-semibold text-slate-900">{product.name}</h3>
+        <Link to={`/products/${product.id}`}>
+          <h3 className="font-semibold text-slate-900 hover:text-blue-600">
+            {product.name}
+          </h3>
+        </Link>
 
         <div className="mt-1 flex items-center gap-1 text-sm text-slate-500">
           <Star size={14} className="fill-amber-400 text-amber-400" />
